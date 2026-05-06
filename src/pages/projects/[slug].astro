@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/Tag.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const statusLabel: Record<string, string> = {
+  active: 'Active',
+  archived: 'Archived',
+  experimental: 'Experimental',
+};
+---
+
+<BaseLayout
+  title={`${project.data.title} — Projects — ruichenwei`}
+  description={project.data.summary}
+>
+  <article class="max-w-3xl mx-auto px-6 py-16">
+    <!-- Back link -->
+    <a href="/projects" class="text-sm text-[var(--color-accent)] hover:underline mb-8 inline-block">
+      ← All Projects
+    </a>
+
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="flex items-center gap-3 mb-3 flex-wrap">
+        {project.data.status && project.data.status !== 'active' && (
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-[var(--color-text-lighter)]">
+            {statusLabel[project.data.status] || project.data.status}
+          </span>
+        )}
+        <time class="text-sm text-[var(--color-text-lighter)]" datetime={project.data.date.toISOString()}>
+          {project.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+        </time>
+      </div>
+
+      <h1 class="text-3xl font-serif font-bold text-[var(--color-text)] mb-4">
+        {project.data.title}
+      </h1>
+      <p class="text-lg text-[var(--color-text-light)] leading-relaxed mb-6">
+        {project.data.summary}
+      </p>
+
+      <!-- Meta info -->
+      <div class="flex flex-col gap-3 text-sm">
+        {project.data.role && (
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--color-text-lighter)] w-16">Role</span>
+            <span class="text-[var(--color-text)]">{project.data.role}</span>
+          </div>
+        )}
+        {project.data.stack.length > 0 && (
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--color-text-lighter)] w-16">Stack</span>
+            <span class="text-[var(--color-text)]">{project.data.stack.join(', ')}</span>
+          </div>
+        )}
+        {project.data.tags.length > 0 && (
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--color-text-lighter)] w-16">Tags</span>
+            <div class="flex flex-wrap gap-1.5">
+              {project.data.tags.map((tag) => <Tag name={tag} />)}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Links -->
+      {(project.data.demoUrl || project.data.githubUrl) && (
+        <div class="flex gap-3 mt-6">
+          {project.data.demoUrl && (
+            <a href={project.data.demoUrl} target="_blank" rel="noopener noreferrer"
+              class="text-sm px-4 py-2 bg-[var(--color-accent)] text-white rounded-lg hover:bg-blue-700 transition-colors">
+              Live Demo →
+            </a>
+          )}
+          {project.data.githubUrl && (
+            <a href={project.data.githubUrl} target="_blank" rel="noopener noreferrer"
+              class="text-sm px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-gray-50 transition-colors">
+              Source Code →
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <hr class="border-[var(--color-border)] mb-10" />
+
+    <!-- Content -->
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

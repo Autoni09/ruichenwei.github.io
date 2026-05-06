@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import WritingCard from '../components/WritingCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const allWriting = await getCollection('writing', ({ data }) => !data.draft);
+const latestWriting = allWriting
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="ruichenwei — Personal Website" description="Personal website of ruichenwei. Exploring AI, productivity, and building tools that matter.">
+  <!-- Hero -->
+  <section class="max-w-3xl mx-auto px-6 pt-16 pb-12">
+    <h1 class="text-3xl sm:text-4xl font-serif font-bold text-[var(--color-text)] mb-4">
+      Hi, I'm ruichenwei.
+    </h1>
+    <p class="text-lg text-[var(--color-text-light)] mb-6 leading-relaxed max-w-2xl">
+      I'm interested in AI, productivity systems, and building small tools that solve real problems.
+      I believe in learning by building, and I share what I learn along the way.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/projects" class="inline-block px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+        View Projects
+      </a>
+      <a href="/about" class="inline-block px-5 py-2.5 border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+        About Me
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="max-w-3xl mx-auto px-6 py-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-serif font-semibold text-[var(--color-text)]">Featured Projects</h2>
+        <a href="/projects" class="text-sm text-[var(--color-accent)] hover:underline">All projects →</a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            summary={project.data.summary}
+            slug={project.id}
+            tags={project.data.tags}
+            date={project.data.date}
+            status={project.data.status}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Latest Writing -->
+  {latestWriting.length > 0 && (
+    <section class="max-w-3xl mx-auto px-6 py-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-serif font-semibold text-[var(--color-text)]">Recent Writing</h2>
+        <a href="/writing" class="text-sm text-[var(--color-accent)] hover:underline">All writing →</a>
+      </div>
+      <div>
+        {latestWriting.map((post) => (
+          <WritingCard
+            title={post.data.title}
+            summary={post.data.summary}
+            slug={post.id}
+            tags={post.data.tags}
+            date={post.data.date}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Contact CTA -->
+  <section class="max-w-3xl mx-auto px-6 py-12">
+    <div class="p-8 rounded-xl bg-gray-50 border border-[var(--color-border)] text-center">
+      <h2 class="text-xl font-serif font-semibold text-[var(--color-text)] mb-3">Get in Touch</h2>
+      <p class="text-sm text-[var(--color-text-light)] mb-5 max-w-md mx-auto">
+        Interested in collaborating or just want to say hello? I'd love to hear from you.
+      </p>
+      <a href="/contact" class="inline-block px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+        Contact Me
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/Tag.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  title={`${post.data.title} — Writing — ruichenwei`}
+  description={post.data.summary}
+>
+  <article class="max-w-3xl mx-auto px-6 py-16">
+    <!-- Back link -->
+    <a href="/writing" class="text-sm text-[var(--color-accent)] hover:underline mb-8 inline-block">
+      ← All Writing
+    </a>
+
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="flex items-center gap-3 mb-3">
+        <time class="text-sm text-[var(--color-text-lighter)]" datetime={post.data.date.toISOString()}>
+          {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        {post.data.category && (
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-[var(--color-text-lighter)]">
+            {post.data.category}
+          </span>
+        )}
+      </div>
+
+      <h1 class="text-3xl font-serif font-bold text-[var(--color-text)] mb-4">
+        {post.data.title}
+      </h1>
+      <p class="text-lg text-[var(--color-text-light)] leading-relaxed mb-4">
+        {post.data.summary}
+      </p>
+
+      {post.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5">
+          {post.data.tags.map((tag) => <Tag name={tag} />)}
+        </div>
+      )}
+    </header>
+
+    <hr class="border-[var(--color-border)] mb-10" />
+
+    <!-- Content -->
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

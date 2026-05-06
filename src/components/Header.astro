@@ -1,0 +1,64 @@
+---
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-[var(--color-border)] bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+  <nav class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="/" class="text-lg font-serif font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
+      ruichenwei
+    </a>
+
+    <!-- Desktop Nav -->
+    <ul class="hidden sm:flex items-center gap-6">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm transition-colors',
+              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                ? 'text-[var(--color-accent)] font-medium'
+                : 'text-[var(--color-text-light)] hover:text-[var(--color-text)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile Nav -->
+    <details class="sm:hidden relative">
+      <summary class="cursor-pointer text-[var(--color-text-light)] list-none">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </summary>
+      <ul class="absolute right-0 top-10 bg-white border border-[var(--color-border)] rounded-lg shadow-lg py-2 min-w-[140px]">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'block px-4 py-2 text-sm transition-colors',
+                currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                  ? 'text-[var(--color-accent)] font-medium'
+                  : 'text-[var(--color-text-light)] hover:text-[var(--color-text)] hover:bg-gray-50',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+</header>

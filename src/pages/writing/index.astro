@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WritingCard from '../../components/WritingCard.astro';
+import { getCollection } from 'astro:content';
+
+const allWriting = await getCollection('writing', ({ data }) => !data.draft);
+const sortedWriting = allWriting.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Writing — ruichenwei" description="Articles, notes, and reflections by ruichenwei.">
+  <article class="max-w-3xl mx-auto px-6 py-16">
+    <h1 class="text-3xl font-serif font-bold text-[var(--color-text)] mb-3">Writing</h1>
+    <p class="text-[var(--color-text-light)] mb-10 max-w-xl">
+      Thoughts on building, learning, and working better.
+    </p>
+
+    {sortedWriting.length > 0 ? (
+      <div>
+        {sortedWriting.map((post) => (
+          <WritingCard
+            title={post.data.title}
+            summary={post.data.summary}
+            slug={post.id}
+            tags={post.data.tags}
+            date={post.data.date}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--color-text-light)]">No posts yet. Check back soon.</p>
+    )}
+  </article>
+</BaseLayout>
