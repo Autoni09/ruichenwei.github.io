@@ -10,8 +10,8 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="border-b border-[var(--color-border)] bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-  <nav class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+<header class="border-b border-[var(--color-border)] bg-[var(--color-bg-card)]/80 backdrop-blur-sm sticky top-0 z-50">
+  <nav class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="/" class="text-lg font-serif font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
       ruichenwei
     </a>
@@ -37,21 +37,21 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Nav -->
     <details class="sm:hidden relative">
-      <summary class="cursor-pointer text-[var(--color-text-light)] list-none">
+      <summary class="cursor-pointer text-[var(--color-text-light)] list-none p-1 -m-1">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 12h18M3 6h18M3 18h18" />
         </svg>
       </summary>
-      <ul class="absolute right-0 top-10 bg-white border border-[var(--color-border)] rounded-lg shadow-lg py-2 min-w-[140px]">
+      <ul class="absolute right-0 top-10 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-lg shadow-lg py-2 min-w-[160px]">
         {navItems.map((item) => (
           <li>
             <a
               href={item.href}
               class:list={[
-                'block px-4 py-2 text-sm transition-colors',
+                'block px-4 py-2.5 text-sm transition-colors',
                 currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
                   ? 'text-[var(--color-accent)] font-medium'
-                  : 'text-[var(--color-text-light)] hover:text-[var(--color-text)] hover:bg-gray-50',
+                  : 'text-[var(--color-text-light)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-muted)]',
               ]}
             >
               {item.label}

@@ -19,7 +19,7 @@ const { Content } = await render(post);
   title={`${post.data.title} — Writing — ruichenwei`}
   description={post.data.summary}
 >
-  <article class="max-w-3xl mx-auto px-6 py-16">
+  <article class="py-16">
     <!-- Back link -->
     <a href="/writing" class="text-sm text-[var(--color-accent)] hover:underline mb-8 inline-block">
       ← All Writing
@@ -32,7 +32,7 @@ const { Content } = await render(post);
           {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
         {post.data.category && (
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-[var(--color-text-lighter)]">
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[var(--color-bg-muted)] text-[var(--color-text-lighter)]">
             {post.data.category}
           </span>
         )}

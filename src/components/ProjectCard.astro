@@ -26,7 +26,7 @@ const statusLabel: Record<string, string> = {
         {title}
       </h3>
       {status && status !== 'active' && (
-        <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-[var(--color-text-lighter)] shrink-0">
+        <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--color-bg-muted)] text-[var(--color-text-lighter)] shrink-0">
           {statusLabel[status] || status}
         </span>
       )}

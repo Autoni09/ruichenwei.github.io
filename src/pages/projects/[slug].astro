@@ -25,7 +25,7 @@ const statusLabel: Record<string, string> = {
   title={`${project.data.title} — Projects — ruichenwei`}
   description={project.data.summary}
 >
-  <article class="max-w-3xl mx-auto px-6 py-16">
+  <article class="py-16">
     <!-- Back link -->
     <a href="/projects" class="text-sm text-[var(--color-accent)] hover:underline mb-8 inline-block">
       ← All Projects
@@ -35,7 +35,7 @@ const statusLabel: Record<string, string> = {
     <header class="mb-10">
       <div class="flex items-center gap-3 mb-3 flex-wrap">
         {project.data.status && project.data.status !== 'active' && (
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-[var(--color-text-lighter)]">
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[var(--color-bg-muted)] text-[var(--color-text-lighter)]">
             {statusLabel[project.data.status] || project.data.status}
           </span>
         )}
@@ -80,13 +80,13 @@ const statusLabel: Record<string, string> = {
         <div class="flex gap-3 mt-6">
           {project.data.demoUrl && (
             <a href={project.data.demoUrl} target="_blank" rel="noopener noreferrer"
-              class="text-sm px-4 py-2 bg-[var(--color-accent)] text-white rounded-lg hover:bg-blue-700 transition-colors">
+              class="text-sm px-4 py-2 bg-[var(--color-accent)] text-white rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors">
               Live Demo →
             </a>
           )}
           {project.data.githubUrl && (
             <a href={project.data.githubUrl} target="_blank" rel="noopener noreferrer"
-              class="text-sm px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-gray-50 transition-colors">
+              class="text-sm px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-bg-muted)] transition-colors">
               Source Code →
             </a>
           )}
